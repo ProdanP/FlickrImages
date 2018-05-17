@@ -104,5 +104,13 @@ public class PhotoInfo {
     public void setIsFamily(String isFamily) {
         this.isFamily = isFamily;
     }
+
+    public String getImageUrl(){
+        return "https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg"
+                .replace("{farm-id}", farm)
+                .replace("{server-id}", server)
+                .replace("{id}", id)
+                .replace("{secret}", secret);
+    }
 }
 

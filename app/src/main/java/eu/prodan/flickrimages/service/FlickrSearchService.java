@@ -2,7 +2,6 @@ package eu.prodan.flickrimages.service;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +25,7 @@ public class FlickrSearchService {
         queryParams.put("tags", searchedTag);
 
         final MutableLiveData<FlickrResponse> data = new MutableLiveData<>();
+
         RetrofitCall.getInstance().getFlicker(queryParams).enqueue(new Callback<FlickrResponse>() {
             @Override
             public void onResponse(Call<FlickrResponse> call, Response<FlickrResponse> response) {
@@ -34,8 +34,7 @@ public class FlickrSearchService {
 
             @Override
             public void onFailure(Call<FlickrResponse> call, Throwable t) {
-                Log.d("", "onFailure: " + t.getMessage());
-                Log.d("", "onFailure: " + t.getCause());
+                data.setValue(null);
             }
         });
 
