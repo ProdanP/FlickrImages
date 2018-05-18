@@ -33,7 +33,7 @@ public class PicassoCache {
         return mInstance;
     }
 
-    private void initializePicassoCache(){
+    public void initializePicassoCache(){
         File httpCacheDirectory = new File(FlickrApplication.getInstance().getCacheDir(), "picasso-cache");
         cache = new Cache(httpCacheDirectory, 15*1024*1024);
 

@@ -17,19 +17,20 @@ import retrofit2.Response;
  */
 
 public class FlickrSearchService {
-    public LiveData<FlickrResponse> getFlicker(String searchedTag){
+    MutableLiveData<FlickrResponse> data = new MutableLiveData<>();
+
+
+    public MutableLiveData<FlickrResponse> getFlicker(String searchedTag){
         String method = "flickr.photos.search";
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("api_key", ApiConstants.API_KEY);
         queryParams.put("method", method);
         queryParams.put("tags", searchedTag);
 
-        final MutableLiveData<FlickrResponse> data = new MutableLiveData<>();
-
         RetrofitCall.getInstance().getFlicker(queryParams).enqueue(new Callback<FlickrResponse>() {
             @Override
             public void onResponse(Call<FlickrResponse> call, Response<FlickrResponse> response) {
-                data.setValue(response.body());
+                data.postValue(response.body());
             }
 
             @Override

@@ -8,18 +8,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 
 import eu.prodan.flickrimages.R;
 import eu.prodan.flickrimages.adapters.PicassoCache;
 import eu.prodan.flickrimages.datamodel.FlickrResponse;
+import eu.prodan.flickrimages.ui.viewmodels.CustomViewModelFactory;
 import eu.prodan.flickrimages.ui.viewmodels.FlickrFeedViewModel;
 import eu.prodan.flickrimages.ui.views.CustomGridLayoutManager;
 import eu.prodan.flickrimages.ui.views.DynamicToolbar;
 import eu.prodan.flickrimages.ui.views.RecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    DynamicToolbar toolbar;
+    private RecyclerView recyclerView;
+    private DynamicToolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +33,55 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new CustomGridLayoutManager(this, 500));
 
         toolbar = findViewById(R.id.dynamic_toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setOnSearchIconClickListner(onSearchClickListener);
+        toolbar.setOnEditTextKeyListener(onKeyListener);
 
-        callForFlickr();
+        setSupportActionBar(toolbar);
     }
 
     public void callForFlickr() {
-        FlickrFeedViewModel viewModel = ViewModelProviders.of(this).get(FlickrFeedViewModel.class);
+        CustomViewModelFactory factory = new CustomViewModelFactory(toolbar.getTextFromInput());
 
+        FlickrFeedViewModel viewModel = ViewModelProviders.of(this, factory).get(FlickrFeedViewModel.class);
         viewModel.getItemsFeedListObservable().observe(this, new Observer<FlickrResponse>() {
             @Override
             public void onChanged(@Nullable FlickrResponse flickrResponse) {
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, flickrResponse.getPhotosList().getPhotoInfoList());
-                recyclerView.setAdapter(adapter);
+                if(flickrResponse != null){
+                    RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, flickrResponse.getPhotosList().getPhotoInfoList());
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
+    }
+
+    View.OnClickListener onSearchClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            callForFlickr();
+        }
+    };
+
+    View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if((event.getAction() == KeyEvent.ACTION_DOWN)&&keyCode == KeyEvent.KEYCODE_ENTER){
+                callForFlickr();
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            callForFlickr();
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

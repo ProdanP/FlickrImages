@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#212229</color>
     <color name="colorAccent">#FF4081</color>
     <color name="transparentWhite">#d9dfdbdc</color>
-    <color name="transparentBackground">#827eb7</color>
+    <color name="transparentBackground">#aeabdf</color>
     <color name="detailedActivityBackground">#FF424242</color>
+    <color name="toolbar_background">#3b2969</color>
 </resources>

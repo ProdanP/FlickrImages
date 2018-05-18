@@ -12,13 +12,11 @@ import eu.prodan.flickrimages.service.FlickrSearchService;
 
 public class FlickrFeedViewModel extends ViewModel {
     private final LiveData<FlickrResponse> itemsFeedListObservable;
-    public FlickrFeedViewModel() {
-        itemsFeedListObservable = new FlickrSearchService().getFlicker("Dog");
+    public FlickrFeedViewModel(String searchedTag) {
+        itemsFeedListObservable = new FlickrSearchService().getFlicker(searchedTag);
     }
 
     public LiveData<FlickrResponse> getItemsFeedListObservable(){
         return itemsFeedListObservable;
     }
-
-
 }

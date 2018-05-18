@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:orientation="horizontal">
 
     <EditText
         android:id="@+id/search_input"
-        android:layout_width="match_parent"
+        android:maxLines="1"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
-</RelativeLayout>
+        android:textSize="20sp"
+        android:textColor="@color/transparentWhite"
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:textCursorDrawable="@null"/>
+
+    <ImageView
+        android:padding="2dp"
+        android:id="@+id/search_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_baseline_search_24px" />
+
+</LinearLayout>
