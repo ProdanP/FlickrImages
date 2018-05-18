@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.prodan.flickrimages.R;
 import eu.prodan.flickrimages.adapters.PicassoCache;
+import eu.prodan.flickrimages.datamodel.FlickrPage;
 import eu.prodan.flickrimages.datamodel.PhotoInfo;
 import eu.prodan.flickrimages.ui.DetailedActivity;
 
@@ -21,18 +23,12 @@ import eu.prodan.flickrimages.ui.DetailedActivity;
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private Context mContext;
-    private List<PhotoInfo> mPhotoInfoList;
-
-    public RecyclerViewAdapter(Context mContext, List<PhotoInfo> mPhotoInfoList) {
-        this.mContext = mContext;
-        this.mPhotoInfoList = mPhotoInfoList;
-    }
+    private List<PhotoInfo> mPhotoInfoList = new ArrayList<>();
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_view_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -40,6 +36,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.setData(mPhotoInfoList.get(position).getImageUrl(), mPhotoInfoList.get(position).getTitle());
+    }
+
+    public void setRepos(List<PhotoInfo> repos){
+        this.mPhotoInfoList.clear();
+        this.mPhotoInfoList.addAll(repos);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,9 +68,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, DetailedActivity.class);
+                    Intent intent = new Intent(itemView.getContext(), DetailedActivity.class);
                     intent.putExtra("image_url", imageUrl);
-                    mContext.startActivity(intent);
+                    itemView.getContext().startActivity(intent);
                 }
             });
         }
