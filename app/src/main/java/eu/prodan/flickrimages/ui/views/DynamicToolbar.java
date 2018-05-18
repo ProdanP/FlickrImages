@@ -13,6 +13,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import eu.prodan.flickrimages.R;
 
@@ -61,7 +62,7 @@ public class DynamicToolbar extends Toolbar {
         searchIcon.setOnClickListener(onClickListener);
     }
 
-    public void setOnEditTextKeyListener(OnKeyListener onKeyListener){
-        editText.setOnKeyListener(onKeyListener);
+    public void setOnEditTextKeyListener(EditText.OnEditorActionListener onKeyListener){
+        editText.setOnEditorActionListener(onKeyListener);
     }
 }
